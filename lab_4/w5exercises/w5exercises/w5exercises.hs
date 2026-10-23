@@ -1,3 +1,6 @@
+import Data.Char
+import Control.Monad
+
 import Data.List
 import Data.Ord (comparing)
 
@@ -6,20 +9,44 @@ import Data.Ord (comparing)
 -- IO
 -- Q1
 echoCaps :: IO ()
-echoCaps = undefined
+echoCaps = do
+ str <- getLine
+ let upStr = map toUpper str
+ putStrLn upStr
 
 -- Q2
 echoFile :: FilePath -> IO ()
-echoFile path = undefined
+echoFile path = do
+ strings <- readFile path
+ let stringLines = lines strings
+ sequence_ [putStrLn line | line <- stringLines]
 
 -- Q3
 calculator :: IO ()
-calculator = undefined
+calculator = do
+  action <- getLine
+  
+  num1 <- readLn
+  num2 <- readLn
+  
+  let result = case action of
+        "+" -> num1 + num2
+        "-" -> num1 - num2
+        "*" -> num1 * num2
+        _   -> num1 + num2
+        
+  putStrLn (show result)
 
 -- Q4
 infiniteAppend :: IO ()
-infiniteAppend = undefined
-
+infiniteAppend = do
+ path <- getLine
+ 
+ forever $ do
+  input <- getLine
+  appendFile path (input ++ "\n")
+ 
+-- ================================
 -- Monads
 -- Q1
 -- flatten :: [[a]] -> [a]
@@ -57,6 +84,7 @@ divTwice x y =
   superSafeDiv firstnumber y >>= \secondnumber ->
    return secondnumber
 
+-- =================================
 -- Connected words
 connectionMap :: [(Char, [Char])]
 connectionMap =
